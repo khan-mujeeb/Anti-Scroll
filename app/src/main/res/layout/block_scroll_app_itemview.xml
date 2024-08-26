@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_marginBottom="10dp"
+    android:backgroundTint="@color/eerie_black"
+    app:cardCornerRadius="10dp">
+
+    <RelativeLayout
+        android:paddingHorizontal="8dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/appIconImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_launcher_round"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:layout_marginHorizontal="10dp"
+            android:id="@+id/NoScrollappNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/appIconImageView"
+            android:layout_centerVertical="true"
+            android:text="@string/no_scroll_app_name"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:id="@+id/rightLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:contentDescription="@string/hourglass_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/eerie_black"
+                android:src="@drawable/baseline_hourglass_top_24" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="1dp"
+                android:layout_marginHorizontal="5dp"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

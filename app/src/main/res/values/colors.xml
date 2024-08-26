@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="eerie_black">#1F211C</color>
+    <color name="night">#141612 </color>
 </resources>

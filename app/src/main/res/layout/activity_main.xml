@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@color/night"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:gravity="center"
     tools:context=".MainActivity">
+    
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dashboardCardView"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:backgroundTint="@color/eerie_black"
+        android:minHeight="330dp"
+        style="@style/dashboard_bg"
+
+        android:layout_height="wrap_content">
+
+
+
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/statusTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,17 +33,46 @@
         android:textSize="18sp" />
 
     <Button
+        android:textStyle="bold"
+        android:layout_marginHorizontal="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/dashboardCardView"
         android:id="@+id/enableServiceButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enable Accessibility Service"
-        android:layout_marginTop="20dp" />
+        android:textSize="16sp"
+        android:text="@string/start_service"
+        android:layout_marginTop="-25dp" />
 
     <Button
+        android:visibility="gone"
         android:id="@+id/customizeBlockingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Customize Blocking"
         android:layout_marginTop="20dp" />
+    
+    <TextView
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="50dp"
+        android:id="@+id/blockScrollAppsTextView"
+        android:layout_below="@id/dashboardCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="23sp"
+        android:text="@string/block_scroll_apps"/>
 
-</LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/block_scroll_app_itemview"
+        android:layout_below="@id/blockScrollAppsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/no_scroll_app_rc"
+        />
+
+</RelativeLayout>

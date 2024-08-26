@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Anti Scroll</string>
+    <string name="start_service">Start Service</string>
+    <string name="block_scroll_apps">Block Scroll Apps</string>
+    <string name="hourglass_icon">hourglass icon</string>
+    <string name="no_scroll_app_name">no scroll App Name</string>
 </resources>

@@ -7,40 +7,65 @@ import android.provider.Settings
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.TextView
+import com.example.antiscroll.adapter.NoScrollAppAdapter
+import com.example.antiscroll.data.BlockScrollAppList
+import com.example.antiscroll.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var statusTextView: TextView
-    private lateinit var enableServiceButton: Button
-    private lateinit var customizeBlockingButton: Button
+    private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        statusTextView = findViewById(R.id.statusTextView)
-        enableServiceButton = findViewById(R.id.enableServiceButton)
-        customizeBlockingButton = findViewById(R.id.customizeBlockingButton)
+        subscribeUI()
+        variableInit()
+        subscribeClickListener()
 
-        // Check if the Accessibility Service is enabled
-        if (isAccessibilityServiceEnabled()) {
-            statusTextView.text = "Service Status: Enabled"
-        } else {
-            statusTextView.text = "Service Status: Disabled"
-        }
 
-        enableServiceButton.setOnClickListener {
+
+
+
+
+
+    }
+
+    private fun subscribeClickListener() {
+
+        // Set the click listener for the Enable Service button
+        binding.enableServiceButton.setOnClickListener {
             // Redirect the user to the Accessibility Settings to enable the service
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
             startActivity(intent)
         }
+    }
 
-        customizeBlockingButton.setOnClickListener {
-            // Handle customization settings (like opening a new settings activity)
-            // Example: Open a new activity for customizing blocking rules
-            val intent = Intent(this, CustomizeBlockingActivity::class.java)
-            startActivity(intent)
+    private fun variableInit() {
+
+    }
+    private fun subscribeUI() {
+
+        // Check if the Accessibility Service is enabled
+        accessiblityServiceStatus()
+
+        getAvilableAppList()
+    }
+
+    private fun accessiblityServiceStatus() {
+        if (isAccessibilityServiceEnabled()) {
+            binding.enableServiceButton.text = "Close Service"
+        } else {
+            binding.enableServiceButton.text = "Start Service"
         }
+    }
+
+    private fun getAvilableAppList() {
+
+        binding.noScrollAppRc.adapter = NoScrollAppAdapter(this@MainActivity, BlockScrollAppList.appList)
+
     }
 
     // Function to check if the Accessibility Service is enabled
@@ -71,10 +96,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         // Update the service status when returning from settings
-        if (isAccessibilityServiceEnabled()) {
-            statusTextView.text = "Service Status: Enabled"
-        } else {
-            statusTextView.text = "Service Status: Disabled"
-        }
+        accessiblityServiceStatus()
     }
 }
