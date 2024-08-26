@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="eerie_black">#1F211C</color>
     <color name="night">#141612 </color>
+    <color name="carmine">#98211F</color>
+    <color name="dark_spring_green">#0C6F37</color>
 </resources>

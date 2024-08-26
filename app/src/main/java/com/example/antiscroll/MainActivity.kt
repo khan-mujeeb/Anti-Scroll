@@ -1,15 +1,18 @@
 package com.example.antiscroll
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
-import android.widget.Button
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.antiscroll.adapter.NoScrollAppAdapter
 import com.example.antiscroll.data.BlockScrollAppList
 import com.example.antiscroll.databinding.ActivityMainBinding
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.utils.ColorTemplate
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,15 +53,52 @@ class MainActivity : AppCompatActivity() {
 
         // Check if the Accessibility Service is enabled
         accessiblityServiceStatus()
-
+        pieChart()
         getAvilableAppList()
+    }
+
+    private fun pieChart() {
+        // Initialize the PieChart
+
+        // Prepare the data for the PieChart
+        val pieEntries = listOf(
+            PieEntry(30f, "January"),
+            PieEntry(20f, "February"),
+            PieEntry(50f, "March")
+        )
+
+        // Set up the dataset
+        val dataSet = PieDataSet(pieEntries, "Monthly Data")
+        dataSet.colors = ColorTemplate.COLORFUL_COLORS.asList() // Set the colors of the pie slices
+
+        // Create PieData
+        val data = PieData(dataSet)
+        data.setValueTextSize(12f)
+        data.setValueTextColor(Color.BLACK)
+
+        // Set data to PieChart and customize the chart appearance
+        binding.pieChart.data = data
+        binding.pieChart.setUsePercentValues(true)  // Show data as percentages
+        binding.pieChart.centerText = "Sales"
+        binding.pieChart.setCenterTextSize(16f)
+        binding.pieChart.description.isEnabled = false // Remove the description label
+
+        binding.pieChart.legend.isEnabled = false // Hide the legend
+
+        binding.pieChart.animateY(1000)
+        binding.pieChart.setHoleColor(getColor(R.color.eerie_black))
+        // Refresh the chart
+        binding.pieChart.invalidate() // Refr
+
     }
 
     private fun accessiblityServiceStatus() {
         if (isAccessibilityServiceEnabled()) {
             binding.enableServiceButton.text = "Close Service"
+            binding.enableServiceButton.setBackgroundColor(getColor(R.color.carmine))
         } else {
             binding.enableServiceButton.text = "Start Service"
+            binding.enableServiceButton.setBackgroundColor(getColor(R.color.dark_spring_green))
         }
     }
 
