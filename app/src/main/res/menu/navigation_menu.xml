@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+   <item
+         android:id="@+id/homeFragment"
+         android:title="@string/home"
+         android:icon="@drawable/baseline_home_filled_24" />
+    <item
+         android:id="@+id/statsFragment"
+         android:title="@string/stats"
+         android:icon="@drawable/baseline_bar_chart_24" />
+</menu>

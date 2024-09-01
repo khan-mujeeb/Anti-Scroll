@@ -4,4 +4,10 @@
     <string name="block_scroll_apps">Block Scroll Apps</string>
     <string name="hourglass_icon">hourglass icon</string>
     <string name="no_scroll_app_name">no scroll App Name</string>
+    <string name="app_logo">app logo</string>
+    <string name="max_session_duration">Max Session Duration</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="stats">Stats</string>
+    <string name="home">Home</string>
 </resources>

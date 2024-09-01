@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text Sizes -->
+    <dimen name="title_text">22sp</dimen> <!-- "Anti Scroll" -->
+    <dimen name="section_heading">18sp</dimen> <!-- "Block Scroll Apps" -->
+    <dimen name="body_text">15sp</dimen> <!-- General body text (e.g., "No chart data available") -->
+    <dimen name="button_text">16sp</dimen> <!-- "Start Service" Button Text -->
+    <dimen name="general_text">16sp</dimen> <!-- General text size -->
+    <dimen name="small_text">12sp</dimen> <!-- Additional details like app names or icons -->
+
+    <!-- Padding and Margin Sizes -->
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">12dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+
+    <!-- Icon Sizes -->
+    <dimen name="icon_small">24dp</dimen> <!-- Small icons like app icons -->
+    <dimen name="icon_large">36dp</dimen> <!-- Larger icons if needed -->
+</resources>
