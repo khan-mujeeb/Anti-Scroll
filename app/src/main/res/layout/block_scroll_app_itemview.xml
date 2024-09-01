@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:layout_marginBottom="10dp"
-    android:backgroundTint="@color/eerie_black"
+    android:backgroundTint="@color/white"
     app:cardCornerRadius="10dp">
 
     <RelativeLayout
@@ -23,17 +23,33 @@
             android:src="@mipmap/ic_launcher_round"
             android:contentDescription="@string/app_logo" />
 
-        <TextView
-            android:layout_marginHorizontal="10dp"
-            android:id="@+id/NoScrollappNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_centerInParent="true"
             android:layout_toEndOf="@id/appIconImageView"
+            android:layout_toStartOf="@id/rightLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_marginHorizontal="10dp"
+                android:id="@+id/NoScrollappNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-            android:layout_centerVertical="true"
-            android:text="@string/no_scroll_app_name"
-            android:textColor="@color/white"
-            android:textSize="@dimen/body_text" />
+
+                android:text="@string/no_scroll_app_name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/body_text" />
+            <TextView
+                android:layout_marginHorizontal="10dp"
+                android:id="@+id/appTypeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/no_scroll_app_name"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/rightLayout"
@@ -47,7 +63,7 @@
                 android:contentDescription="@string/hourglass_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/eerie_black"
+                android:backgroundTint="@color/white"
                 android:src="@drawable/baseline_hourglass_empty_24" />
 
             <com.google.android.material.divider.MaterialDivider
