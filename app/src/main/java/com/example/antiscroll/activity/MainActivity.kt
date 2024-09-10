@@ -36,10 +36,12 @@ class MainActivity : AppCompatActivity() {
         binding.bottomBar.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.homeFragment -> {
+                    binding.toolbarTitle.text = getString(R.string.app_name)
                     navController.navigate(R.id.homeFragment)
                     true
                 }
                 R.id.statsFragment -> {
+                    binding.toolbarTitle.text = getString(R.string.weekly_usage)
                     navController.navigate(R.id.statsFragment)
                     true
                 }

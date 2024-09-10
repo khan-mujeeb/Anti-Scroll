@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StatsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_alignParentTop="true"
+        android:id="@+id/LineChart"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:elevation="4dp"
+        android:padding="16dp" />
+
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/section_heading"
+        android:layout_height="wrap_content"
+        android:text="@string/statistics"/>
 
-</FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+
+</RelativeLayout>

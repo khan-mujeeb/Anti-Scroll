@@ -1,11 +1,14 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
     namespace = "com.example.antiscroll"
     compileSdk = 34
+
+    
 
     defaultConfig {
         applicationId = "com.example.antiscroll"
@@ -43,6 +46,12 @@ dependencies {
 
     // 3rd party dependencies
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")     // chart
+
+    // room db
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+
 
     // pre built dependencies
     implementation("androidx.core:core-ktx:1.13.1")

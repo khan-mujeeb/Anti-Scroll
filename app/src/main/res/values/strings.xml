@@ -11,4 +11,6 @@
     <string name="stats">Stats</string>
     <string name="home">Home</string>
     <string name="close_service">Close Service</string>
+    <string name="weekly_usage">Weekly Usage</string>
+    <string name="statistics">Statistics</string>
 </resources>

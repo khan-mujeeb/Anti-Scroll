@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
     <com.github.mikephil.charting.charts.PieChart
-        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="12dp"
         android:id="@+id/pieChart"
         android:layout_width="match_parent"
-        android:layout_height="270dp"
+        android:layout_height="230dp"
+        android:layout_alignParentTop="true"
         android:elevation="4dp"
-        android:padding="16dp"
-         />
+        android:padding="16dp" />
 
 
     <LinearLayout
-        android:gravity="center"
         android:id="@+id/serviceButtonsLayout"
-        android:layout_below="@id/pieChart"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/pieChart"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <Button
@@ -31,8 +32,7 @@
 
             android:elevation="2dp"
             android:text="@string/close_service"
-            android:textSize="16sp"
-            />
+            android:textSize="16sp" />
 
         <Space
             android:layout_width="12dp"
@@ -42,21 +42,19 @@
             android:id="@+id/enableServiceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
+
             android:elevation="2dp"
             android:text="@string/start_service"
-            android:textSize="16sp"
-            />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_below="@id/serviceButtonsLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="40dp"
+        android:layout_below="@id/serviceButtonsLayout"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        >
+        android:paddingHorizontal="16dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -86,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            
+
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/block_scroll_app_itemview" />
 

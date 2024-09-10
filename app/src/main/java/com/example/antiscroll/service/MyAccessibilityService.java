@@ -1,4 +1,4 @@
-package com.example.antiscroll;
+package com.example.antiscroll.service;
 
 import android.accessibilityservice.AccessibilityService;
 import android.util.Log;
