@@ -20,14 +20,14 @@ class TimeTrackingViewModel(private val repository: TimeTrackingRepository) : Vi
     }
 
     // Get all time tracking records
-    fun getAllTrackingData(onResult: (List<TimeTracking>) -> Unit) {
-        viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                repository.getAllTrackingData()
-            }
-            onResult(result)
-        }
-    }
+//    fun getAllTrackingData(onResult: (List<TimeTracking>) -> Unit) {
+//        viewModelScope.launch {
+//            val result = withContext(Dispatchers.IO) {
+//                repository.getAllTrackingData()
+//            }
+//            onResult(result)
+//        }
+//    }
 
     // Get total duration for a specific app
     fun getTotalDurationForApp(appName: String, onResult: (Long) -> Unit) {

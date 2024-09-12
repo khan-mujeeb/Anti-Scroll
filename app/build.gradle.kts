@@ -44,6 +44,12 @@ android {
 
 dependencies {
 
+    // viewModelScope:
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.5")
+
+    // lifecycleScope:
+    implementation( "androidx.lifecycle:lifecycle-runtime-ktx:2.8.5")
+
     // 3rd party dependencies
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")     // chart
 

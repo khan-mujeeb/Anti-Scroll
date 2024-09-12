@@ -13,9 +13,9 @@ class TimeTrackingRepository(private val timeTrackingDao: TimeTrackingDao) {
     }
 
     // Get all tracking data ordered by date
-    suspend fun getAllTrackingData(): List<TimeTracking> {
-        return timeTrackingDao.getAllTrackingData()
-    }
+//    suspend fun getAllTrackingData(): List<TimeTracking> {
+//        return timeTrackingDao.getAllTrackingData()
+//    }
 
     // Get the total duration of usage for a specific app
     suspend fun getTotalDurationForApp(appName: String): Long {
