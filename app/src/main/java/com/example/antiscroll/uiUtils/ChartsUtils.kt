@@ -11,7 +11,7 @@ object ChartsUtils {
 
 
     /// *********** function to update the pie chart ************
-    fun pieChart(binding: FragmentHomeBinding) {
+    fun pieChart(binding: FragmentHomeBinding, centerText: String = "Total Usage") {
         // Prepare the data for the PieChart
         val pieEntries = listOf(
             PieEntry(30f, "Instagram"),
@@ -66,7 +66,7 @@ object ChartsUtils {
 
         // Text in the center of the PieChart
         binding.pieChart.setDrawCenterText(true)
-        binding.pieChart.centerText = "3:23hr"
+        binding.pieChart.centerText = centerText
         binding.pieChart.setCenterTextSize(18f)
         binding.pieChart.setCenterTextColor(Color.BLACK)
 

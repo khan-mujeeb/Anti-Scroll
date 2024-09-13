@@ -1,5 +1,6 @@
 package com.example.antiscroll.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -18,7 +19,7 @@ interface TimeTrackingDao {
     suspend fun getTotalDurationForApp(appName: String): Long
 
     @Query("SELECT SUM(duration) FROM time_tracking")
-    suspend fun getTotalDuration(): Long
+    fun getTotalDuration(): LiveData<Long>
 
 
 }

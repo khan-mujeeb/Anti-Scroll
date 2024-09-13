@@ -7,11 +7,9 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.HasDefaultViewModelProviderFactory;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
 import androidx.lifecycle.ViewModelStoreOwner;
-import androidx.lifecycle.viewmodel.CreationExtras;
 
 import com.example.antiscroll.data.TimeTracking;
 import com.example.antiscroll.db.TimeTrackingDatabase;
@@ -20,12 +18,12 @@ import com.example.antiscroll.viewmodel.TimeTrackingViewModel;
 import com.example.antiscroll.viewmodel.TimeTrackingViewModelFactory;
 
 public class MyAccessibilityService extends AccessibilityService implements ViewModelStoreOwner {
+    private final ViewModelStore viewModelStore = new ViewModelStore();
     private long startTime = 0;
     private long totalTimeSpent = 0;
     private boolean isTracking = false;
     private String currentApp = "";
     private TimeTrackingViewModel viewModel;
-    private final ViewModelStore viewModelStore = new ViewModelStore();
 
     @Override
     public void onCreate() {
@@ -44,15 +42,10 @@ public class MyAccessibilityService extends AccessibilityService implements View
 
         if (
                 accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
-                || accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_VIEW_SCROLLED
+                        || accessibilityEvent.getEventType() == AccessibilityEvent.TYPE_VIEW_SCROLLED
         ) {
 
-            if (!isTracking) {
-                startTracking();
-            } else {
-                // Update total time spent if tracking is ongoing
-                totalTimeSpent = System.currentTimeMillis() - startTime;
-            }
+            // Block the content if the total time spent exceeds 1 minute
 
 
             if (nodeInfo != null) {
@@ -66,6 +59,9 @@ public class MyAccessibilityService extends AccessibilityService implements View
     }
 
     private void detectAndBlockContent(AccessibilityNodeInfo node) {
+
+        if(totalTimeSpent > 60000) blockContent();
+        Log.d("total time spent", String.valueOf(totalTimeSpent) + " status " + isTracking);
         if (node == null) return;
 
         Toast.makeText(this, "Detecting content", Toast.LENGTH_SHORT).show();
@@ -79,22 +75,19 @@ public class MyAccessibilityService extends AccessibilityService implements View
 //        Log.d("ViewHierarchy", "Class: " + className + ", Text: " + text + ", ContentDesc: " + contentDescription  + " child " +   node.findAccessibilityNodeInfosByViewId("com.instagram.android:id/clips_video_container") );
 
 
-
         if (
-                        !node.findAccessibilityNodeInfosByViewId("com.instagram.android:id/clips_video_container").isEmpty() &&
-                        node.findAccessibilityNodeInfosByViewId("com.instagram.android:id/row_feed_button_like") != null &&
-                        node.findAccessibilityNodeInfosByViewId("com.instagram.android:id/row_feed_button_comment") != null &&
-                        node.findAccessibilityNodeInfosByViewId("com.instagram.android:id/row_feed_button_share") != null &&
-                        node.findAccessibilityNodeInfosByViewId("com.instagram.android:id/row_feed_button_more") != null &&
-                        node.findAccessibilityNodeInfosByViewId("com.instagram.android:id/row_feed_button_audio") != null &&
-                        node.findAccessibilityNodeInfosByViewId("com.instagram.android:id/row_feed_button_follow") != null &&
-                        node.findAccessibilityNodeInfosByViewId("com.instagram.android:id/row_feed_button_reels") != null &&
-                        node.findAccessibilityNodeInfosByViewId("com.instagram.android:id/row_feed_button_profile") != null
+                !node.findAccessibilityNodeInfosByViewId("com.instagram.android:id/clips_video_container").isEmpty()
 
         ) {
 
 
             Toast.makeText(this, "Reel layout detected", Toast.LENGTH_SHORT).show();
+
+            if (!isTracking) {
+                startTracking();
+            }
+
+
             // Block the content
 //            blockContent(node);
             return;
@@ -111,8 +104,7 @@ public class MyAccessibilityService extends AccessibilityService implements View
     }
 
 
-
-    private void blockContent(AccessibilityNodeInfo node) {
+    private void blockContent() {
         // Perform actions to block the content
 
         Toast.makeText(this, "Blocking content", Toast.LENGTH_SHORT).show();
@@ -132,7 +124,6 @@ public class MyAccessibilityService extends AccessibilityService implements View
         if (isTracking) {
             totalTimeSpent = System.currentTimeMillis() - startTime;
             isTracking = false;
-
 
 
             // Save tracked time into the database
