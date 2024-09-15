@@ -11,10 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.antiscroll.databinding.FragmentHomeBinding
 import com.example.antiscroll.db.TimeTrackingDatabase
+import com.example.antiscroll.repository.AvailableAppSettingRepository
 import com.example.antiscroll.repository.TimeTrackingRepository
 import com.example.antiscroll.uiUtils.ChartsUtils
 import com.example.antiscroll.uiUtils.SystemUtils
 import com.example.antiscroll.uiUtils.UIUpdater
+import com.example.antiscroll.viewmodel.AvailableAppSettingViewModel
+import com.example.antiscroll.viewmodel.AvailableAppSettingViewModelFactory
 import com.example.antiscroll.viewmodel.TimeTrackingViewModel
 import com.example.antiscroll.viewmodel.TimeTrackingViewModelFactory
 
@@ -23,6 +26,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: TimeTrackingViewModel
+    private lateinit var availableAppViewModel: AvailableAppSettingViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +47,19 @@ class HomeFragment : Fragment() {
 
     private fun variableInit() {
 
-        // Assuming repository is initialized somewhere in your code
+        // ************ Initialize the ViewModel ************
+
+        // 1. Create an instance of the TimeTrackingRepository
         val repository = TimeTrackingRepository(TimeTrackingDatabase.getDataBase(requireContext()).timeTrackingDao())
         val factory = TimeTrackingViewModelFactory(repository)
+        viewModel = ViewModelProvider(this@HomeFragment, factory)[TimeTrackingViewModel::class.java]
 
-        viewModel = ViewModelProvider(this, factory)[TimeTrackingViewModel::class.java]
+
+
+        // 2. Create an instance of the AvailableAppSettingViewModel
+        val availableAppSettingRepository = AvailableAppSettingRepository(TimeTrackingDatabase.getDataBase(requireContext()).availableAppSettingDao())
+        val availableAppSettingFactory = AvailableAppSettingViewModelFactory(availableAppSettingRepository)
+        availableAppViewModel = ViewModelProvider(this@HomeFragment, availableAppSettingFactory)[AvailableAppSettingViewModel::class.java]
     }
 
     private fun subscribeClickListener() {
@@ -86,7 +98,12 @@ class HomeFragment : Fragment() {
         // Set the Pie Chart
 
         // Update the available app list
-        UIUpdater.getAvilableAppList(requireContext(), binding)
+        UIUpdater.getAvilableAppList(
+            context = requireContext(),
+            binding = binding,
+            availableAppViewModel = availableAppViewModel,
+            viewLifecycleOwner = viewLifecycleOwner
+        )
     }
 
 

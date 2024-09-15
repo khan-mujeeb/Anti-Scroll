@@ -8,17 +8,34 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.example.antiscroll.R
 import com.example.antiscroll.uiUtils.SystemUtils
+import com.example.antiscroll.viewmodel.AvailableAppSettingViewModel
+import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.switchmaterial.SwitchMaterial
+import kotlinx.coroutines.launch
 
-class NoScrollAppAdapter(private val context: Context, private val appList: List<String>) : RecyclerView.Adapter<NoScrollAppAdapter.NoScrollAppViewHolder>() {
+class NoScrollAppAdapter(
+    private val context: Context,
+    private val appList: List<String>,
+    private val availableAppViewModel: AvailableAppSettingViewModel,
+    private val lifecycleOwner: LifecycleOwner
 
+) : RecyclerView.Adapter<NoScrollAppAdapter.NoScrollAppViewHolder>() {
+
+
+
+    //   ***** inner class to hold the view *****
     inner class NoScrollAppViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val appIconImageView: ImageView = view.findViewById(R.id.appIconImageView)
         val appNameTextView: TextView = view.findViewById(R.id.NoScrollappNameTextView)
         val setTimeLimit: ImageButton = view.findViewById(R.id.setDurationButton)
+        val scrollSwitch: SwitchMaterial = view.findViewById(R.id.scrollSwitch)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoScrollAppViewHolder {
@@ -36,13 +53,34 @@ class NoScrollAppAdapter(private val context: Context, private val appList: List
 
 
 
-        subscribeOnClickEvents(holder)
+        subscribeOnClickEvents(holder, packageName)
         setData(holder, packageName)
+        subscribeUI(holder, packageName)
     }
 
-    private fun subscribeOnClickEvents(holder: NoScrollAppViewHolder) {
+    private fun subscribeUI(holder: NoScrollAppAdapter.NoScrollAppViewHolder, packageName: String) {
+        lifecycleOwner.lifecycleScope.launch {
+            lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                availableAppViewModel.getAvailableAppSetting(packageName).collect { availableAppSetting ->
+                    holder.scrollSwitch.isChecked = availableAppSetting?.isAntiScrollEnabled ?: false
+                }
+            }
+        }
+
+    }
+
+    private fun subscribeOnClickEvents(holder: NoScrollAppViewHolder, packageName: String) {
         holder.setTimeLimit.setOnClickListener {
             SystemUtils.showTimePickerDialog(context)
+        }
+
+        holder.scrollSwitch.setOnCheckedChangeListener { _, isChecked ->
+            lifecycleOwner.lifecycleScope.launch {
+                availableAppViewModel.updateAppSetting(
+                    packageName = packageName,
+                    isBlocked = isChecked
+                )
+            }
         }
     }
 
