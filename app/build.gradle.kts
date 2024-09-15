@@ -44,6 +44,10 @@ android {
 
 dependencies {
 
+    // key store
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
+
+
     // viewModelScope:
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.5")
 

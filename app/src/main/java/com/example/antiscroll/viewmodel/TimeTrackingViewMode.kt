@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 
 class TimeTrackingViewModel(private val repository: TimeTrackingRepository) : ViewModel() {
 
+
     // ***************** Insert a new TimeTracking record ******************
     fun insertTimeTracking(timeTracking: TimeTracking) {
         viewModelScope.launch {

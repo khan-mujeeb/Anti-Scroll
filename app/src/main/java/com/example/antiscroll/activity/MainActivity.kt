@@ -1,20 +1,27 @@
 package com.example.antiscroll.activity
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.antiscroll.R
-import com.example.antiscroll.data.TimeTracking
+import com.example.antiscroll.data.AvailableAppSetting
+import com.example.antiscroll.data.BlockScrollAppList.defaultSettings
 import com.example.antiscroll.databinding.ActivityMainBinding
 import com.example.antiscroll.db.TimeTrackingDatabase
-import com.example.antiscroll.repository.TimeTrackingRepository
-import com.example.antiscroll.uiUtils.UIUpdater
-import com.example.antiscroll.viewmodel.TimeTrackingViewModel
-import com.example.antiscroll.viewmodel.TimeTrackingViewModelFactory
+import com.example.antiscroll.repository.AvailableAppSettingRepository
+import com.example.antiscroll.viewmodel.AvailableAppSettingViewModel
+import com.example.antiscroll.viewmodel.AvailableAppSettingViewModelFactory
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +29,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
-    public lateinit var viewModelPublic: TimeTrackingViewModel
+    private lateinit var availableAppViewModel: AvailableAppSettingViewModel
+    private val Context.dataStore by preferencesDataStore(name = "app_preferences")
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,20 +70,25 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun variableInit() {
+
+        // Get the NavController
         navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Assuming repository is initialized somewhere in your code
-        val repository = TimeTrackingRepository(TimeTrackingDatabase.Companion.getDataBase(this).timeTrackingDao())
-        val factory = TimeTrackingViewModelFactory(repository)
+        // view model
 
-        viewModelPublic = ViewModelProvider(this, factory)[TimeTrackingViewModel::class.java]
+        // available app setting view model
+        val availableAppSettingRepository = AvailableAppSettingRepository(TimeTrackingDatabase.getDataBase(this@MainActivity).availableAppSettingDao())
+        val availableAppSettingFactory = AvailableAppSettingViewModelFactory(availableAppSettingRepository)
+        availableAppViewModel = ViewModelProvider(this, availableAppSettingFactory)[AvailableAppSettingViewModel::class.java]
 
     }
 
     private fun subscribeUI() {
 
 
+        // handle the first run
+        checkAndSetUpForFirstTimeUser(this@MainActivity)
 
 
         // Load the Fragment
@@ -85,6 +99,49 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
+    suspend fun saveFirstRun(context: Context, isFirstRun: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.IS_FIRST_RUN] = isFirstRun
+        }
+    }
+
+
+    private fun isFirstRun(context: Context): Flow<Boolean> {
+        return context.dataStore.data
+            .map { preferences ->
+                preferences[PreferencesKeys.IS_FIRST_RUN] ?: true // Default to true for first run
+            }
+    }
+
+
+    private fun checkAndSetUpForFirstTimeUser(context: Context) {
+        runBlocking {
+            val isFirstTime = isFirstRun(context).first() // Get the value from DataStore
+
+            if (isFirstTime) {
+                // Initialize default settings in the Room database
+                insertDefaultAppSettings()
+
+                // Save that it's no longer the first run
+                saveFirstRun(context, false)
+            }
+        }
+    }
+
+    private suspend fun insertDefaultAppSettings() {
+
+
+        // Insert these settings into the Room database
+        availableAppViewModel.insertDefaultSettings(defaultSettings)
+
+    }
+
+
+    object PreferencesKeys {
+        val IS_FIRST_RUN = booleanPreferencesKey("is_first_run")
+        // Add more keys here as needed
+    }
 
 
 

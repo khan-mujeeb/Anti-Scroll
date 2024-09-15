@@ -6,11 +6,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.antiscroll.data.AvailableAppSetting
 import com.example.antiscroll.data.TimeTracking
 
-@Database(entities = [TimeTracking::class], version = 1)
+@Database(entities = [TimeTracking::class, AvailableAppSetting::class], version = 1)
 abstract class TimeTrackingDatabase  : RoomDatabase() {
     abstract fun timeTrackingDao(): TimeTrackingDao
+    abstract fun availableAppSettingDao(): AvailableAppSettingDao
 
     companion object {
 
