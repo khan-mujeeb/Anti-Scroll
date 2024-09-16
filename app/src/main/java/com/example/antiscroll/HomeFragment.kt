@@ -8,7 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.antiscroll.data.AvailableAppSetting
 import com.example.antiscroll.databinding.FragmentHomeBinding
 import com.example.antiscroll.db.TimeTrackingDatabase
 import com.example.antiscroll.repository.AvailableAppSettingRepository
@@ -20,6 +24,8 @@ import com.example.antiscroll.viewmodel.AvailableAppSettingViewModel
 import com.example.antiscroll.viewmodel.AvailableAppSettingViewModelFactory
 import com.example.antiscroll.viewmodel.TimeTrackingViewModel
 import com.example.antiscroll.viewmodel.TimeTrackingViewModelFactory
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -27,6 +33,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var viewModel: TimeTrackingViewModel
     private lateinit var availableAppViewModel: AvailableAppSettingViewModel
+//    private lateinit var enabledAppList: List<AvailableAppSetting>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,9 +64,19 @@ class HomeFragment : Fragment() {
 
 
         // 2. Create an instance of the AvailableAppSettingViewModel
-        val availableAppSettingRepository = AvailableAppSettingRepository(TimeTrackingDatabase.getDataBase(requireContext()).availableAppSettingDao())
+        val availableAppSettingRepository = AvailableAppSettingRepository(
+            TimeTrackingDatabase
+            .getDataBase(requireContext())
+            .availableAppSettingDao()
+        )
         val availableAppSettingFactory = AvailableAppSettingViewModelFactory(availableAppSettingRepository)
-        availableAppViewModel = ViewModelProvider(this@HomeFragment, availableAppSettingFactory)[AvailableAppSettingViewModel::class.java]
+
+        availableAppViewModel = ViewModelProvider(
+            this@HomeFragment,
+            availableAppSettingFactory)[AvailableAppSettingViewModel::class.java]
+
+
+
     }
 
     private fun subscribeClickListener() {
@@ -98,12 +115,22 @@ class HomeFragment : Fragment() {
         // Set the Pie Chart
 
         // Update the available app list
-        UIUpdater.getAvilableAppList(
-            context = requireContext(),
-            binding = binding,
-            availableAppViewModel = availableAppViewModel,
-            viewLifecycleOwner = viewLifecycleOwner
-        )
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                availableAppViewModel.getAllSettings()
+                    .distinctUntilChanged()  // This will only emit changes when the data actually changes
+                    .collect { availableAppList ->
+                        UIUpdater.getAvilableAppList(
+                            context = requireContext(),
+                            binding = binding,
+                            availableAppViewModel = availableAppViewModel,
+                            viewLifecycleOwner = viewLifecycleOwner,
+                            availableAppList = availableAppList
+                        )
+                    }
+            }
+        }
+
     }
 
 

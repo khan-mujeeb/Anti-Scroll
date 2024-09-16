@@ -23,4 +23,20 @@ class AvailableAppSettingRepository(private val availableAppSettingDao: Availabl
         availableAppSettingDao.updateAppSetting(packageName, isBlocked)
     }
 
+    // *************** get isAntiScrollEnabled ***************
+    suspend fun getIsAntiScrollEnabled(packageName: String): Boolean {
+        return availableAppSettingDao.getIsAntiScrollEnabled(packageName)
+    }
+
+    // *************** get all settings ***************
+    fun getAllSettings(): Flow<List<AvailableAppSetting>>{
+        return availableAppSettingDao.getAllSettings()
+    }
+
+
+    // *************** update time limit ***************
+    suspend fun updateTimeLimit(packageName: String, time: Long) {
+        availableAppSettingDao.updateTimeLimit(packageName, time)
+    }
+
 }

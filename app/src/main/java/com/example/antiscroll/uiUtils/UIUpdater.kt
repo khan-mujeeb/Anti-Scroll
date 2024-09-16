@@ -3,6 +3,7 @@ package com.example.antiscroll.uiUtils
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import com.example.antiscroll.adapter.NoScrollAppAdapter
+import com.example.antiscroll.data.AvailableAppSetting
 import com.example.antiscroll.data.BlockScrollAppList
 import com.example.antiscroll.databinding.FragmentHomeBinding
 import com.example.antiscroll.service.AccessibilityServiceHelper
@@ -27,14 +28,16 @@ object UIUpdater {
         context: Context,
         binding: FragmentHomeBinding,
         availableAppViewModel: AvailableAppSettingViewModel,
-        viewLifecycleOwner: LifecycleOwner
+        viewLifecycleOwner: LifecycleOwner,
+        availableAppList: List<AvailableAppSetting>
     ) {
 
         binding.noScrollAppRc.adapter = NoScrollAppAdapter(
             context = context,
             appList = BlockScrollAppList.appList,
             availableAppViewModel = availableAppViewModel,
-            lifecycleOwner = viewLifecycleOwner
+            lifecycleOwner = viewLifecycleOwner,
+            availableAppList = availableAppList
         )
 
     }

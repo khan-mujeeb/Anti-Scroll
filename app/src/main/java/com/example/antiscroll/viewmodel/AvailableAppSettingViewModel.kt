@@ -13,7 +13,6 @@ class AvailableAppSettingViewModel(private val repository: AvailableAppSettingRe
 
 
     // ********** insert default settings **********
-
     suspend fun insertDefaultSettings(defaultSetting: List<AvailableAppSetting>) {
 
         viewModelScope.launch {
@@ -37,6 +36,27 @@ class AvailableAppSettingViewModel(private val repository: AvailableAppSettingRe
     // ********** get app specific setting by package name **********
     fun getAvailableAppSetting(packageName: String): Flow<AvailableAppSetting?> {
         return repository.getAvailableAppSetting(packageName)
+    }
+
+    // ********** get isAntiScrollEnabled **********
+    suspend fun getIsAntiScrollEnabled(packageName: String) {
+        withContext(Dispatchers.IO) {
+            return@withContext repository.getIsAntiScrollEnabled(packageName)
+        }
+    }
+
+
+    // ********** get all settings **********
+    fun getAllSettings(): Flow<List<AvailableAppSetting>> {
+        return repository.getAllSettings()
+    }
+
+
+    // ********** update time limit **********
+    suspend fun updateTimeLimit(packageName: String, time: Long) {
+        withContext(Dispatchers.IO) {
+            repository.updateTimeLimit(packageName, time)
+        }
     }
 
 }

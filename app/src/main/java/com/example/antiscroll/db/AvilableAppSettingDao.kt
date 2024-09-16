@@ -15,12 +15,18 @@ interface AvailableAppSettingDao {
     suspend fun insertDefaultSettings(defaultSetting: List<AvailableAppSetting>)
 
     @Query("SELECT * FROM available_app_setting")
-    fun getAllSettings(): List<AvailableAppSetting>
+    fun getAllSettings(): Flow<List<AvailableAppSetting>>
 
     @Query("SELECT * FROM available_app_setting WHERE appName = :packageName")
     fun getAvailableAppSetting(packageName: String): Flow<AvailableAppSetting?>
 
 
-    @Query("Update available_app_setting SET isAntiScrollEnabled = :isBlocked WHERE appName = :packageName")
+    @Query("UPDATE available_app_setting SET isAntiScrollEnabled = :isBlocked WHERE appName = :packageName")
     suspend fun updateAppSetting(packageName: String, isBlocked: Boolean)
+
+    @Query("SELECT isAntiScrollEnabled FROM available_app_setting WHERE appName = :packageName")
+    suspend fun getIsAntiScrollEnabled(packageName: String): Boolean
+
+    @Query("UPDATE available_app_setting SET upperTimeLimit = :time WHERE appName = :packageName")
+    suspend fun updateTimeLimit(packageName: String, time: Long)
 }
