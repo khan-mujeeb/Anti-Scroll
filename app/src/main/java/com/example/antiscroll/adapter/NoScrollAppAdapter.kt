@@ -64,6 +64,7 @@ class NoScrollAppAdapter(
 
 
 
+        // 1. Observe the availableAppSetting for the app and update the switch enabled or disabled
         val appSetting = availableAppList.find { it.appName == packageName }
         holder.scrollSwitch.isChecked = appSetting?.isAntiScrollEnabled ?: false
 
@@ -87,6 +88,7 @@ class NoScrollAppAdapter(
         // 1. Set the time limit for the app
         holder.setTimeLimit.setOnClickListener {
 
+            // Get the default time limit for the app
             val defaultTime = availableAppList.find { it.appName == packageName }?.upperTimeLimit ?: 0L
 
             SystemUtils.showTimePickerDialog(context, defaultTime ) { hours, minutes ->

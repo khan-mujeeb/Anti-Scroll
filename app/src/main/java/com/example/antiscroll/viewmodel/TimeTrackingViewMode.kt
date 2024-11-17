@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.antiscroll.data.TimeTracking
 import com.example.antiscroll.repository.TimeTrackingRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -38,6 +39,16 @@ class TimeTrackingViewModel(private val repository: TimeTrackingRepository) : Vi
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
                 repository.getTotalDuration()
+            }
+            onResult(result)
+        }
+    }
+
+    // ************** Get all tracking data ******************
+    fun getAllTrackingData(onResult: (Flow<List<TimeTracking>>) -> Unit) {
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                repository.getAllTrackingData()
             }
             onResult(result)
         }

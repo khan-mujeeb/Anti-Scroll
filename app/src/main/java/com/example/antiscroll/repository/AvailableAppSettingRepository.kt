@@ -24,7 +24,9 @@ class AvailableAppSettingRepository(private val availableAppSettingDao: Availabl
     }
 
     // *************** get isAntiScrollEnabled ***************
-    suspend fun getIsAntiScrollEnabled(packageName: String): Boolean {
+    suspend fun getIsAntiScrollEnabled(packageName: String): Int {
+
+
         return availableAppSettingDao.getIsAntiScrollEnabled(packageName)
     }
 

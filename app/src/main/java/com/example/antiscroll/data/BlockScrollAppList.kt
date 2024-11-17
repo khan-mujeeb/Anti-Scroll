@@ -4,7 +4,6 @@ object BlockScrollAppList {
     val appList = listOf(
         "com.instagram.android",  // Instagram
         "com.google.android.youtube",  // YouTube
-        "com.facebook.katana",  // Facebook
         // "com.twitter.android"  // Twitter/X (uncomment if needed)
     )
 
@@ -12,4 +11,5 @@ object BlockScrollAppList {
         AvailableAppSetting(appName = appList[0], upperTimeLimit = 1200000, isAntiScrollEnabled = true),
         AvailableAppSetting(appName = appList[1], upperTimeLimit = 1200000, isAntiScrollEnabled = true)
     )
+
 }

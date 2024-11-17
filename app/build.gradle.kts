@@ -44,6 +44,9 @@ android {
 
 dependencies {
 
+    // worker manager
+    implementation ("androidx.work:work-runtime-ktx:2.8.1")
+
     // key store
     implementation ("androidx.datastore:datastore-preferences:1.1.1")
 
@@ -55,7 +58,8 @@ dependencies {
     implementation( "androidx.lifecycle:lifecycle-runtime-ktx:2.8.5")
 
     // 3rd party dependencies
-    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")     // chart
+        // 1. chart
+        implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // room db
     implementation("androidx.room:room-runtime:2.6.1")

@@ -24,4 +24,12 @@ class TimeTrackingRepository(private val timeTrackingDao: TimeTrackingDao) {
     fun getTotalDuration(): LiveData<Long> {
         return timeTrackingDao.getTotalDuration()
     }
+
+
+    // ***************** get all tracking data *********************
+    fun getAllTrackingData(): Flow<List<TimeTracking>> {
+        return flow {
+            emit(timeTrackingDao.getAllTrackingData())
+        }
+    }
 }

@@ -25,7 +25,7 @@ interface AvailableAppSettingDao {
     suspend fun updateAppSetting(packageName: String, isBlocked: Boolean)
 
     @Query("SELECT isAntiScrollEnabled FROM available_app_setting WHERE appName = :packageName")
-    suspend fun getIsAntiScrollEnabled(packageName: String): Boolean
+    suspend fun getIsAntiScrollEnabled(packageName: String): Int
 
     @Query("UPDATE available_app_setting SET upperTimeLimit = :time WHERE appName = :packageName")
     suspend fun updateTimeLimit(packageName: String, time: Long)

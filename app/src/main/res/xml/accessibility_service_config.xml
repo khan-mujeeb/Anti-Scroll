@@ -3,4 +3,4 @@
     android:accessibilityFeedbackType="feedbackSpoken"
     android:canRetrieveWindowContent="true"
     android:notificationTimeout="100"
-    android:packageNames="com.instagram.android" />
+    android:packageNames="com.instagram.android, com.google.android.youtube" />

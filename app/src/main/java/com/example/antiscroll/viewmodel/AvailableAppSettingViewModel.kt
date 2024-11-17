@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antiscroll.data.AvailableAppSetting
 import com.example.antiscroll.repository.AvailableAppSettingRepository
+import com.example.antiscroll.service.Callback
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -39,9 +41,18 @@ class AvailableAppSettingViewModel(private val repository: AvailableAppSettingRe
     }
 
     // ********** get isAntiScrollEnabled **********
-    suspend fun getIsAntiScrollEnabled(packageName: String) {
-        withContext(Dispatchers.IO) {
-            return@withContext repository.getIsAntiScrollEnabled(packageName)
+    fun getIsAntiScrollEnabled(packageName: String, callback: Callback<Int>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            // Assuming repository is a field or injected
+            val isEnabled = repository.getIsAntiScrollEnabled(packageName)
+
+            withContext(Dispatchers.Main) {
+                if(isEnabled == null)
+                    callback.onResult(-1)
+
+                 else
+                    callback.onResult(isEnabled)
+            }
         }
     }
 

@@ -1,23 +1,32 @@
 package com.example.antiscroll.uiUtils
 
+import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import com.example.antiscroll.databinding.FragmentHomeBinding
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
 
 object ChartsUtils {
 
 
     /// *********** function to update the pie chart ************
-    fun pieChart(binding: FragmentHomeBinding, centerText: String = "Total Usage") {
+    fun pieChart(context: Context, binding: FragmentHomeBinding, durationByAppName: Map<String, Long>, centerText: String = "Total Usage") {
+
+
+        val packageManager: PackageManager = context.packageManager
+
+
         // Prepare the data for the PieChart
-        val pieEntries = listOf(
-            PieEntry(30f, "Instagram"),
-            PieEntry(20f, "YouTube"),
-            PieEntry(50f, "X")
-        )
+        val pieEntries = durationByAppName.map { (appName, duration) ->
+
+            val appInfo = packageManager.getApplicationInfo(appName, 0)
+
+            PieEntry(duration.toFloat(), packageManager.getApplicationLabel(appInfo).toString() )
+        }
 
         // Set up the dataset
         val dataSet = PieDataSet(pieEntries, "")
@@ -35,19 +44,20 @@ object ChartsUtils {
         // Configure the value lines to draw labels outside the chart
         dataSet.valueLinePart1OffsetPercentage =
             80f // Distance between the line start and the chart
-        dataSet.valueLinePart1Length = 0.4f // Length of the first segment of the line
-        dataSet.valueLinePart2Length = 0.5f // Length of the second segment of the line
-        dataSet.valueLineWidth = 2f // Width of the lines
+        dataSet.valueLinePart1Length = 0.15f // Length of the first segment of the line
+        dataSet.valueLinePart2Length = 0.35f // Length of the second segment of the line
+        dataSet.valueLineWidth = 1.35f // Width of the lines
         dataSet.valueLineColor = Color.BLACK // Color of the connecting lines
-        dataSet.yValuePosition =
-            PieDataSet.ValuePosition.OUTSIDE_SLICE // Position labels outside the slice
+        dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE // Position labels outside the slice
         dataSet.xValuePosition =
             PieDataSet.ValuePosition.OUTSIDE_SLICE // Horizontal position outside the slice
 
         // Set up the data object
         val data = PieData(dataSet)
+        data.setDrawValues(false) // Disable drawing values on the chart
         data.setValueTextSize(12f)
         data.setValueTextColor(Color.BLACK) // Set label text color
+
 
         // General Pie Chart settings
         binding.pieChart.setUsePercentValues(true)
@@ -60,7 +70,7 @@ object ChartsUtils {
         binding.pieChart.setHoleColor(Color.TRANSPARENT) // Hole color matching your background
         binding.pieChart.setTransparentCircleColor(Color.WHITE) // Light transparent circle
         binding.pieChart.setTransparentCircleAlpha(110)
-        binding.pieChart.holeRadius = 60f
+        binding.pieChart.holeRadius = 85f
         binding.pieChart.transparentCircleRadius = 65f
         binding.pieChart.setEntryLabelColor(Color.BLACK) // Label text color
 

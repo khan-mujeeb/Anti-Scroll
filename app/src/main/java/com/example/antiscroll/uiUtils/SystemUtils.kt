@@ -1,5 +1,6 @@
 package com.example.antiscroll.uiUtils
 
+import android.app.ActivityManager
 import android.app.TimePickerDialog
 import android.content.Context
 import android.icu.text.SimpleDateFormat
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.widget.NumberPicker
 import android.widget.TimePicker
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
 import com.example.antiscroll.R
 import java.util.Date
 import java.util.Locale
@@ -15,6 +17,28 @@ import java.util.concurrent.TimeUnit
 
 object SystemUtils {
 
+
+
+    fun isServiceRunning(context: Context, serviceClass: Class<*>): Boolean {
+        val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
+    }
+
+
+    fun getForegroundApp(context: Context): String {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val runningTaskInfo = activityManager.getRunningTasks(1)
+        if (runningTaskInfo.isEmpty()) {
+            return ""
+        }
+        val componentInfo = runningTaskInfo[0].topActivity
+        return componentInfo!!.packageName
+    }
 
     //   *********** function to show the time picker dialog ****************
     fun showTimePickerDialog(context: Context, defaultTime: Long,  onTimeSet: (hours: Int, minutes: Int) -> Unit) {
@@ -70,6 +94,14 @@ object SystemUtils {
         val minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % 60
         val seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % 60
 
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds)
+//        return when {
+//            hours == 0L && minutes == 0L -> "$seconds seconds"
+//            hours == 0L -> "$minutes minutes"
+//            minutes == 0L -> "$hours hour"
+//            hours == 0L && minutes == 0L && seconds == 0L -> "No data"
+//            else -> "$hours hours $minutes minutes"
+//        }
+
+        return "$hours:$minutes:$seconds"
     }
 }
